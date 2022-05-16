@@ -1,0 +1,42 @@
+[
+  {
+    "id": 1,
+    "title": "Thể Thao",
+    "parent_id": 0
+  },
+  {
+    "id": 2,
+    "title": "Xã Hội",
+    "parent_id": 0
+  },
+  {
+    "id": 3,
+    "title": "Thể Thao Trong Nước",
+    "parent_id": 1
+  },
+  {
+    "id": 4,
+    "title": "Giao Thông",
+    "parent_id": 2
+  },
+  {
+    "id": 5,
+    "title": "Môi Trường",
+    "parent_id": 2
+  },
+  {
+    "id": 6,
+    "title": "Thể Thao Quốc Tế",
+    "parent_id": 1
+  },
+  {
+    "id": 7,
+    "title": "Môi Trường Đồ Thị",
+    "parent_id": 5
+  },
+  {
+    "id": 8,
+    "title": "Giao Thông Ùn Tắc",
+    "parent_id": 4
+  }
+]
