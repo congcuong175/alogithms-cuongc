@@ -6,15 +6,15 @@ import com.google.gson.Gson;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Bai4Function {
     static class KhoiTao {
         public Product findProduct(Product[] listProduct, String nameProduct) {
-            for (Product pr : listProduct
-            ) {
-                if (pr.getName().equalsIgnoreCase(nameProduct)) {
-                    return pr;
+            for (Product product : listProduct) {
+                if (product.getName().equalsIgnoreCase(nameProduct)) {
+                    return product;
                 }
             }
             return null;
@@ -22,10 +22,9 @@ public class Bai4Function {
 
         public List<Product> findProductByCategory(Product[] listProduct, int categoryID) {
             List<Product> products = new ArrayList<>();
-            for (Product pr : listProduct
-            ) {
-                if (pr.getCategoryID() == categoryID) {
-                    products.add(pr);
+            for (Product product : listProduct) {
+                if (product.getCategoryID() == categoryID) {
+                    products.add(product);
                 }
             }
             return products;
@@ -33,13 +32,21 @@ public class Bai4Function {
 
         public List<Product> findProductByPrice(Product[] listProduct, int price) {
             List<Product> products = new ArrayList<>();
-            for (Product pr : listProduct
-            ) {
-                if (pr.getPrice() <= price) {
-                    products.add(pr);
+            for (Product product : listProduct) {
+                if (product.getPrice() <= price) {
+                    products.add(product);
                 }
             }
             return products;
+        }
+
+        public Category findCategoryById(Category[] categories, int id) {
+            for (Category category : categories) {
+                if (category.getId() == id) {
+                    return category;
+                }
+            }
+            return null;
         }
 
         //BubbleSort
@@ -75,38 +82,31 @@ public class Bai4Function {
         }
 
         //Bai13
-        public List<Product> sortByCategoryName(Product[] products, Category[] categories) {
-            List<Product> list = new ArrayList<>();
-            int n = categories.length;
+        public Product[] sortByCategoryName(Product[] products, Category[] categories) {
+            int n = products.length;
             for (int j = 1; j < n; j++) {
-                Category key = categories[j];
+                Product key = products[j];
+                Category category1 = findCategoryById(categories, key.getCategoryID());
                 int i = j - 1;
-                while ((i > -1) && (categories[i].getName().compareTo(key.getName())) > 0) {
-                    categories[i + 1] = categories[i];
-                    i--;
-                }
-                categories[i + 1] = key;
-            }
-
-            for (Category ct : categories
-            ) {
-                for (Product pr : products
-                ) {
-                    if (ct.getId() == pr.getCategoryID()) {
-                        list.add(pr);
+                while (i > -1) {
+                    Category category2 = findCategoryById(categories, products[i].getCategoryID());
+                    if (category1.getName().compareTo(category2.getName()) < 0) {
+                        products[i + 1] = products[i];
+                        i--;
+                    } else {
+                        break;
                     }
                 }
+                products[i + 1] = key;
             }
-            return list;
+            return products;
         }
 
         public Product[] mapProductByCategory(Product[] products, Category[] categories) {
-            for (Product pr : products
-            ) {
-                for (Category ct : categories
-                ) {
-                    if (pr.getCategoryID() == ct.getId()) {
-                        pr.setNamecategory(ct.getName());
+            for (Product product : products) {
+                for (Category category : categories) {
+                    if (product.getCategoryID() == category.getId()) {
+                        product.setNamecategory(category.getName());
                     }
                 }
             }
@@ -115,36 +115,24 @@ public class Bai4Function {
 
         //Bai 15
         public Product minByPrice(Product[] products) {
-            int max = products[0].getPrice();
+            int min = products[0].getPrice();
             for (Product pr : products) {
-                if (pr.getPrice() < max) {
-                    max = pr.getPrice();
+                if (pr.getPrice() < min) {
+                    min = pr.getPrice();
                 }
             }
-            for (Product pr : products
-            ) {
-                if (pr.getPrice() == max) {
-                    return pr;
-                }
-            }
-            return null;
+            return findProductByPrice(products,min).get(0);
         }
 
         //Bai 16
         public Product maxByPrice(Product[] products) {
             int max = products[0].getPrice();
-            for (Product pr : products) {
-                if (pr.getPrice() > max) {
-                    max = pr.getPrice();
+            for (Product product : products) {
+                if (product.getPrice() > max) {
+                    max = product.getPrice();
                 }
             }
-            for (Product pr : products
-            ) {
-                if (pr.getPrice() == max) {
-                    return pr;
-                }
-            }
-            return null;
+            return findProductByPrice(products,max).get(0);
         }
 
         //Bai 21 Đệ qui
@@ -152,7 +140,9 @@ public class Bai4Function {
             if (n == 0) {
                 return salary;
             }
-            return calSalary(salary * 1.1, n - 1);
+            salary*=1.1;
+            n=n-1;
+            return calSalary(salary , n);
         }
 
         //Bai 21 Không đệ qui
@@ -164,14 +154,18 @@ public class Bai4Function {
         }
 
         //Bai 22
-        public int calMonth(double money, double rate, int n) {
-            double tongtien = money * Math.pow((1 + rate), n);
-            if (tongtien - money > money) {
+
+        public int calMonth(double money, double rate) {
+            int n=0;
+            return tinhTien(money,rate,n);
+        }
+        public int tinhTien(double money, double rate,int n){
+            double tongTien=money * Math.pow((1 + rate), n);
+            if(tongTien -money>money){
                 return n;
             }
-            return calMonth(money, rate, n + 1);
+            return tinhTien(money,rate,n+1);
         }
-
         //Bai 22 Không đệ qui
         public int calMonth2(double money, double rate) {
             int n = 0;
@@ -228,11 +222,11 @@ public class Bai4Function {
                     new Category(3, "Card"),
                     new Category(4, "Acsesory")
             };
-            for (Product pr : mapProductByCategory(products, categories)
-            ) {
-                System.out.println(pr.toString());
-            }
-            printMenu();
+//            for (Product pr : sortByCategoryName(products, categories)
+//            ) {
+//                System.out.println(pr.toString());
+//            }
+            System.out.println(calMonth(1000,0.3));
 
         }
     }

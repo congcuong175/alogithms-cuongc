@@ -18,10 +18,8 @@ public class Bai13InsertionSort {
             categories[i + 1] = key;
         }
 
-        for (Category ct : categories
-        ) {
-            for (Product pr : products
-            ) {
+        for (Category ct : categories) {
+            for (Product pr : products) {
                 if (ct.getId() == pr.getCategoryID()) {
                     list.add(pr);
                 }
