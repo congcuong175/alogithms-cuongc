@@ -8,8 +8,7 @@ public class Bai16maxByPrice {
                 max = pr.getPrice();
             }
         }
-        for (Product pr : products
-        ) {
+        for (Product pr : products) {
             if (pr.getPrice() == max) {
                 return pr;
             }
